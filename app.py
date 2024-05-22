@@ -29,4 +29,4 @@ def handle_message(event):
 import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 10000))
-    app.run(host='13.228.225.19', port=port)
+    app.run(host='0.0.0.0', port=port)
