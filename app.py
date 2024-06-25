@@ -38,8 +38,11 @@ def callback():
 def handle_message(event):
     # print(event.reply_token)
     # 回傳家長名
-    message = TextSendMessage(text=data[event.message.text])
-    # message = TextSendMessage(text=event.message.text)
+    momName = 'no people'
+    if event.message.text in data:
+        momName = data[event.message.text]
+ 
+    message = TextSendMessage(text=momName)
     line_bot_api.reply_message(event.reply_token, message)
 
 if __name__ == "__main__":
