@@ -17,7 +17,7 @@ def csv_to_dict(file_path):
         data = [row for row in reader]
     return data
 
-file_path = './student/student.csv'  # 請替換成你的CSV文件路徑
+file_path = '/student/student.csv'  # 請替換成你的CSV文件路徑
 data = csv_to_dict(file_path)
 
 @app.route("/callback", methods=['POST'])
