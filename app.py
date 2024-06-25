@@ -2,6 +2,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
+import csv
 import os
 
 app = Flask(__name__)
@@ -9,6 +10,15 @@ app = Flask(__name__)
 line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
 
+
+def csv_to_dict(file_path):
+    with open(file_path, mode='r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        data = [row for row in reader]
+    return data
+
+file_path = './student/student.csv'  # 請替換成你的CSV文件路徑
+data = csv_to_dict(file_path)
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -24,10 +34,11 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     # print(event.reply_token)
-    message = TextSendMessage(text=event.message.text)
+    # 回傳家長名
+    message = TextSendMessage(text=data[event.message.text])
+    # message = TextSendMessage(text=event.message.text)
     line_bot_api.reply_message(event.reply_token, message)
 
-import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
