@@ -11,14 +11,17 @@ line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
 
 
-def csv_to_dict(file_path):
+def csv_to_custom_dict(file_path):
+    data = {}
     with open(file_path, mode='r', encoding='utf-8') as file:
-        reader = csv.DictReader(file)
-        data = [row for row in reader]
+        reader = csv.reader(file)
+        for row in reader:
+            if row:  # 確保行不為空
+                data[row[0]] = row[1]
     return data
 
 file_path = 'student.csv'  # 請替換成你的CSV文件路徑
-data = csv_to_dict(file_path)
+data = csv_to_custom_dict(file_path)
 
 @app.route("/callback", methods=['POST'])
 def callback():
