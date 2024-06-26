@@ -38,14 +38,16 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # 回傳家長名
+    # 註冊家長
     if '註冊家長' in event.message.text:
         arr = event.message.text.split('\n')
         data[arr[1]] = event.source.user_id
-        print(data)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='註冊成功'))
+        # 需要加入寫回CSV功能
         return
-        
+    
+    # 回傳家長 孩子到校訊息
+    # 需要加入是否由伺服器端傳送的 MSG，不然家長傳自己孩子的名字就會回傳 已到校 訊息給家長
     replyMsg = 'no people'
     replyId = event.reply_token
     if event.message.text in data:
