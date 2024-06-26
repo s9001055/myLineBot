@@ -42,7 +42,7 @@ def handle_message(event):
         momName = data[event.message.text]
  
     message = TextSendMessage(text=momName)
-    line_bot_api.push_message('U5a24e475af75ef9f17e6c12877b10539', TextSendMessage(text=event.userId))
+    line_bot_api.push_message('U5a24e475af75ef9f17e6c12877b10539', TextSendMessage(text=event.source.userId))
     # line_bot_api.reply_message(event.reply_token, message)
 
 if __name__ == "__main__":
