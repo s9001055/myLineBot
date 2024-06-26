@@ -39,6 +39,13 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     # 回傳家長名
+    if '註冊家長' in event.message.text:
+        arr = event.message.text.split('\n')
+        data[arr[1]] = event.source.user_id
+        print(data)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='註冊成功'))
+        return
+        
     replyMsg = 'no people'
     replyId = event.reply_token
     if event.message.text in data:
@@ -48,8 +55,6 @@ def handle_message(event):
         line_bot_api.push_message(replyId, message)
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
-    
-    
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
