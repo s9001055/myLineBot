@@ -20,6 +20,8 @@ def csv_to_custom_dict(file_path):
                 data[row[0]] = row[1]
     return data
 
+
+
 file_path = 'student.csv'  # 請替換成你的CSV文件路徑
 data = csv_to_custom_dict(file_path)
 
@@ -37,16 +39,17 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     # 回傳家長名
-    momName = 'no people'
+    replyMsg = 'no people'
+    replyId = event.reply_token
     if event.message.text in data:
-        momName = data[event.message.text]
- 
-    message = TextSendMessage(text=momName)
-    # print(event.source.userId)
-    # print(type(event.source.userId))
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=event.source.user_id))
-    # line_bot_api.push_message('U5a24e475af75ef9f17e6c12877b10539', TextSendMessage(text=event.source.userId))
-    # line_bot_api.reply_message(event.reply_token, message)
+        replyId = data[event.message.text]
+        replyMsg = event.message.text + '家長，您的小孩已到校'
+        message = TextSendMessage(text=replyMsg)
+        line_bot_api.push_message(replyId, message)
+    else:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
+    
+    
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
