@@ -2,8 +2,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
-# import googlemaps
-
+import json
 import csv
 import os
 
@@ -40,17 +39,26 @@ def callback():
 
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_loction_message(event):
+    taxi_latitude = "24.1436159114637277"
+    taxi_longitude = "120.65892414129009"
 
-    replyMsg = '已收到你的地址'
-    latitude = str(event.message.latitude)
-    longitude = str(event.message.longitude)
+    dest_latitude = str(event.message.latitude)
+    dest_longitude = str(event.message.longitude)
 
-    replyMsg += "(" + latitude + ", " + longitude + ")"
+    # replyMsg += "(" + latitude + ", " + longitude + ")"
 
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" \
+        + taxi_latitude + "," + taxi_longitude \
+        + "&destinations=" \
+        + dest_latitude + "," + dest_longitude \
+        + "&key=" + 'GOOGLE_API_KEY'
+    
+    res = request.get(url)
+    js = json.load(res)
 
+    travel_time = str(js["rows"]["elements"]["duration"]["text"])
 
-
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=travel_time))
     # # 註冊家長
     # if '註冊家長' in event.message.text:
     #     arr = event.message.text.split('\n')
