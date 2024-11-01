@@ -13,7 +13,6 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
-GOOGLE_API_KEY_STR = str(os.environ['GOOGLE_API_KEY'])
 
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_loction_message(event):
@@ -29,7 +28,7 @@ def handle_loction_message(event):
         + "&destinations=" \
         + dest_latitude + "," + dest_longitude \
         + "&key=" \
-        + GOOGLE_API_KEY_STR
+        + str(os.environ['GOOGLE_API_KEY'])
     
     while True:
         res = requests.get(url)
