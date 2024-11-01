@@ -43,9 +43,10 @@ def handle_message(event):
     # latitude = event.message.latitude
     # longitude = event.message.longitude
 
-    # replyMsg = str(latitude) + ", " + str(longitude)
+    replyMsg = str(type(event.message.latitude))
 
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=type(event.message.latitude)))
+
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
     # # 註冊家長
     # if '註冊家長' in event.message.text:
     #     arr = event.message.text.split('\n')
