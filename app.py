@@ -56,10 +56,15 @@ def handle_loction_message(event):
         + dest_latitude + "," + dest_longitude \
         + "&key=" + str(os.environ['GOOGLE_API_KEY'])
     
-    res = request.get(url)
-    js = json.load(res.text)
+    while True:
+        res = requests.get(url)
+        js = json.loads(res.text)
 
-    travel_time = str(js["rows"]["elements"]["duration"]["text"])
+        if js["status"] != "OVER_QUERY_LIMIT":
+            time.sleep(1)
+            break
+
+    travel_time = str(js["rows"][0]["elements"][0]["duration"]["text"])
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=travel_time))
     # # 註冊家長
