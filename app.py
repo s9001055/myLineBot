@@ -2,6 +2,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
+import googlemaps
 import csv
 import os
 
@@ -38,25 +39,26 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # 註冊家長
-    if '註冊家長' in event.message.text:
-        arr = event.message.text.split('\n')
-        data[arr[1]] = event.source.user_id
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='註冊成功'))
-        # 需要加入寫回CSV功能
-        return
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=event.message.text))
+    # # 註冊家長
+    # if '註冊家長' in event.message.text:
+    #     arr = event.message.text.split('\n')
+    #     data[arr[1]] = event.source.user_id
+    #     line_bot_api.reply_message(event.reply_token, TextSendMessage(text='註冊成功'))
+    #     # 需要加入寫回CSV功能
+    #     return
     
-    # 回傳家長 孩子到校訊息
-    # 需要加入是否由伺服器端傳送的 MSG，不然家長傳自己孩子的名字就會回傳 已到校 訊息給家長
-    replyMsg = 'no people'
-    replyId = event.reply_token
-    if event.message.text in data:
-        replyId = data[event.message.text]
-        replyMsg = event.message.text + '家長，您的小孩已到校'
-        message = TextSendMessage(text=replyMsg)
-        line_bot_api.push_message(replyId, message)
-    else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
+    # # 回傳家長 孩子到校訊息
+    # # 需要加入是否由伺服器端傳送的 MSG，不然家長傳自己孩子的名字就會回傳 已到校 訊息給家長
+    # replyMsg = 'no people'
+    # replyId = event.reply_token
+    # if event.message.text in data:
+    #     replyId = data[event.message.text]
+    #     replyMsg = event.message.text + '家長，您的小孩已到校'
+    #     message = TextSendMessage(text=replyMsg)
+    #     line_bot_api.push_message(replyId, message)
+    # else:
+    #     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
