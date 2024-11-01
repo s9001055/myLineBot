@@ -13,22 +13,23 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
+GOOGLE_API_KEY_STR = str(os.environ['GOOGLE_API_KEY'])
 
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_loction_message(event):
-    taxi_latitude = "24.1436159114637277"
-    taxi_longitude = "120.65892414129009"
+    # 台中火車站 經緯度
+    taxi_latitude = "24.138906182438028"
+    taxi_longitude = "120.68648628673088"
 
     dest_latitude = str(event.message.latitude)
     dest_longitude = str(event.message.longitude)
-
-    # replyMsg += "(" + latitude + ", " + longitude + ")"
 
     url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" \
         + taxi_latitude + "," + taxi_longitude \
         + "&destinations=" \
         + dest_latitude + "," + dest_longitude \
-        + "&key=" + str(os.environ['GOOGLE_API_KEY'])
+        + "&key=" \
+        + GOOGLE_API_KEY_STR
     
     while True:
         res = requests.get(url)
