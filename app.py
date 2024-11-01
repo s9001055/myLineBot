@@ -40,12 +40,12 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    latitude = event.message.latitude
-    longitude = event.message.longitude
+    # latitude = event.message.latitude
+    # longitude = event.message.longitude
 
-    replyMsg = str(latitude) + ", " + str(longitude)
+    # replyMsg = str(latitude) + ", " + str(longitude)
 
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=event.message.latitude))
     # # 註冊家長
     # if '註冊家長' in event.message.text:
     #     arr = event.message.text.split('\n')
