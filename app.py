@@ -43,8 +43,7 @@ def handle_message(event):
     # latitude = event.message.latitude
     # longitude = event.message.longitude
 
-    replyMsg = "test" 
-    # str(type(event.message.latitude))
+    replyMsg = type(event.message.latitude)
 
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
