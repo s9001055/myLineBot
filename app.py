@@ -54,7 +54,7 @@ def handle_loction_message(event):
         + taxi_latitude + "," + taxi_longitude \
         + "&destinations=" \
         + dest_latitude + "," + dest_longitude \
-        + "&key=" + 'GOOGLE_API_KEY'
+        + "&key=" + str(os.environ['GOOGLE_API_KEY'])
     
     res = request.get(url)
     js = json.load(res)
