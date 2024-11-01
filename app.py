@@ -13,6 +13,18 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.environ['CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['CHANNEL_SECRET'])
+GOOGLE_MAP_API_STR = str(os.environ['GOOGLE_API_KEY'])
+
+@app.route("/callback", methods=['POST'])
+def callback():
+    signature = request.headers['X-Line-Signature']
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+    return 'OK'
 
 @handler.add(MessageEvent, message=LocationMessage)
 def handle_loction_message(event):
@@ -28,7 +40,7 @@ def handle_loction_message(event):
         + "&destinations=" \
         + dest_latitude + "," + dest_longitude \
         + "&key=" \
-        + str(os.environ['GOOGLE_API_KEY'])
+        + GOOGLE_MAP_API_STR
     
     while True:
         res = requests.get(url)
