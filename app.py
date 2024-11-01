@@ -56,12 +56,12 @@ def handle_loction_message(event):
         + dest_latitude + "," + dest_longitude \
         + "&key=" + str(os.environ['GOOGLE_API_KEY'])
     
-    res = request.get(url)
-    js = json.load(res)
+    # res = request.get(url)
+    # js = json.load(res)
 
-    travel_time = str(js["rows"]["elements"]["duration"]["text"])
+    # travel_time = str(js["rows"]["elements"]["duration"]["text"])
 
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=travel_time))
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
     # # 註冊家長
     # if '註冊家長' in event.message.text:
     #     arr = event.message.text.split('\n')
