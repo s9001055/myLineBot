@@ -39,11 +39,15 @@ def callback():
     return 'OK'
 
 @handler.add(MessageEvent, message=LocationMessage)
-def handle_message(event):
-    # latitude = event.message.latitude
-    # longitude = event.message.longitude
+def handle_loction_message(event):
 
-    replyMsg = str(event.message.latitude)
+    replyMsg = '已收到你的地址'
+    latitude = str(event.message.latitude)
+    longitude = str(event.message.longitude)
+
+    replyMsg += "(" + latitude + ", " + longitude + ")"
+
+
 
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=replyMsg))
